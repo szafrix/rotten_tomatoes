@@ -5,7 +5,7 @@ config = {
     "dataset_local_path": "data/dataset_tokenized",
     ## tokenizer & model
     "model_checkpoint": "bert-base-uncased",
-    
+    "baseline_model_checkpoint": "bert-base-uncased",
     ## other
-    "seed": 42
+    "seed": 42,
 }
