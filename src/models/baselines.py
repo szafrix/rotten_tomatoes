@@ -11,6 +11,9 @@ class InputIndependentBaselineModel(nn.Module):
     def forward(self, x, labels=None):
         return np.random.choice([0, 1])
 
+    def __name__(self):
+        return "InputIndependentBaselineModel"
+
 
 class BaselineBERTLogisticRegressionModel(nn.Module):
 
@@ -20,6 +23,7 @@ class BaselineBERTLogisticRegressionModel(nn.Module):
         self.model = AutoModel.from_pretrained(self.config["baseline_model_checkpoint"])
         for p in self.model.parameters():
             p.requires_grad = False
+            p.grad = None
         self.logreg = nn.Linear(768, 1)
 
     def forward(self, x):

@@ -1,25 +1,26 @@
 from datasets import load_dataset, DatasetDict
 from transformers import AutoTokenizer, DataCollatorWithPadding
-from lightning import LightningDataModule
+from lightning import LightningDataModule, seed_everything
 from torch.utils.data import DataLoader
 import torch
 
-torch.manual_seed(42)
-torch.cuda.manual_seed(42)
+seed_everything(42)
 
 
 class RottenDataLoader(LightningDataModule):
-    def __init__(self, config):
+    def __init__(self, config, batch_size=None):
         super().__init__()
         self.config = config
         self.tokenizer = AutoTokenizer.from_pretrained(self.config["model_checkpoint"])
         self.data_collator = DataCollatorWithPadding(
             tokenizer=self.tokenizer, return_tensors="pt"
         )
+        if batch_size:
+            self.config["batch_size"] = batch_size
 
     def prepare_data(self):
         ds = load_dataset(self.config["dataset_name"])
-        ds = ds.map(self.tokenize, batched=True)
+        ds = ds.map(self.tokenize, batched=True).shuffle(seed=42)
         ds.save_to_disk(self.config["dataset_local_path"])
 
     def setup(self, stage=None):
