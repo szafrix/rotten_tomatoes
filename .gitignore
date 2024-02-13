@@ -162,3 +162,9 @@ cython_debug/
 
 # other
 data/*
+.env
+
+# loggers
+training/rotten-tomatoes
+training/wandb
+training/training

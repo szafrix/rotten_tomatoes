@@ -23,12 +23,14 @@ class RottenDataLoader(LightningDataModule):
         ds.save_to_disk(self.config["dataset_local_path"])
 
     def setup(self, stage=None):
-        self.dataset = DatasetDict.load_from_disk(self.config["dataset_local_path"])
+        dataset = DatasetDict.load_from_disk(self.config["dataset_local_path"])
+        self.dataset = dataset.remove_columns(["text"]).with_format("torch")
 
     def train_dataloader(self):
         return DataLoader(
             self.dataset["train"],
             batch_size=self.config["batch_size"],
+            num_workers=31,  # TODO play with it
             shuffle=True,
             collate_fn=self.data_collator,
         )
@@ -37,7 +39,8 @@ class RottenDataLoader(LightningDataModule):
         return DataLoader(
             self.dataset["validation"],
             batch_size=self.config["batch_size"],
-            shuffle=True,
+            num_workers=31,
+            shuffle=False,
             collate_fn=self.data_collator,
         )
 
@@ -45,7 +48,8 @@ class RottenDataLoader(LightningDataModule):
         return DataLoader(
             self.dataset["test"],
             batch_size=self.config["batch_size"],
-            shuffle=True,
+            num_workers=31,
+            shuffle=False,
             collate_fn=self.data_collator,
         )
 
