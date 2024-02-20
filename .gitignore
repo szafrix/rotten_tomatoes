@@ -168,3 +168,6 @@ data/*
 training/rotten-tomatoes
 training/wandb
 training/training
+
+wandb
+model_ckpts

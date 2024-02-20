@@ -630,6 +630,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.1"
+requires_python = ">=3.8"
+summary = "Read key-value pairs from a .env file and set them as environment variables"
+
+[[package]]
 name = "pytorch-lightning"
 version = "2.1.4"
 requires_python = ">=3.8"
@@ -913,7 +919,7 @@ dependencies = [
 
 [metadata]
 lock_version = "4.0"
-content_hash = "sha256:8bd85e55818cda9e738bd03b89e1080fe8fb4b6c1a5d070457676023fafe8765"
+content_hash = "sha256:37ef195ee3b4e5e7765835800cff67b7d21b0deea45d6589bf5110da12b5c641"
 
 [metadata.files]
 "aiohttp 3.9.3" = [
@@ -2073,6 +2079,10 @@ content_hash = "sha256:8bd85e55818cda9e738bd03b89e1080fe8fb4b6c1a5d070457676023f
 "python-dateutil 2.8.2" = [
     {url = "https://files.pythonhosted.org/packages/36/7a/87837f39d0296e723bb9b62bbb257d0355c7f6128853c78955f57342a56d/python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
     {url = "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
+]
+"python-dotenv 1.0.1" = [
+    {url = "https://files.pythonhosted.org/packages/6a/3e/b68c118422ec867fa7ab88444e1274aa40681c606d59ac27de5a5588f082/python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"},
+    {url = "https://files.pythonhosted.org/packages/bc/57/e84d88dfe0aec03b7a2d4327012c1627ab5f03652216c63d49846d7a6c58/python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"},
 ]
 "pytorch-lightning 2.1.4" = [
     {url = "https://files.pythonhosted.org/packages/1e/5d/39d25102154aa32f3a3b6234af2e192a8b3e97cfdccabb0e96baca21f281/pytorch-lightning-2.1.4.tar.gz", hash = "sha256:f685f2a4862f951b2dbe47ba91945406ffca6be4c8e967b870e86e3b04b15649"},

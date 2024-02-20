@@ -2,41 +2,24 @@ from torch import nn
 from transformers import AutoModel
 import numpy as np
 
+from src.config.schemas import ModelConfig
+from src.models.base_classes import BaseModel, PretrainedHuggingFaceModel
 
-class InputIndependentBaselineModel(nn.Module):
 
-    def __init__(self):
-        super().__init__()
+class InputIndependentBaselineModel(BaseModel):
+
+    def __init__(self, config):
+        super().__init__(config)
 
     def forward(self, x, labels=None):
         return np.random.choice([0, 1])
 
-    def __name__(self):
-        return "InputIndependentBaselineModel"
 
+class BaselineBERTLogisticRegressionModel(PretrainedHuggingFaceModel):
 
-class BaselineBERTLogisticRegressionModel(nn.Module):
+    def __init__(self, config: ModelConfig):
+        super().__init__(config)
+        self.cls_head = self.get_classification_head()
 
-    def __init__(self, config):
-        super().__init__()
-        self.config = config
-        self.model = AutoModel.from_pretrained(self.config["baseline_model_checkpoint"])
-        for p in self.model.parameters():
-            p.requires_grad = False
-            p.grad = None
-        self.logreg = nn.Linear(768, 1)
-
-    def forward(self, x):
-        bert_output = self.model(
-            **{
-                k: v
-                for k, v in x.items()
-                if k in ["input_ids", "token_type_ids", "attention_mask"]
-            }
-        )
-        x = bert_output.last_hidden_state[:, 0, :]
-        x = self.logreg(x)
-        return x
-
-    def __name__(self):
-        return "BaselineBERTLogisticRegressionModel"
+    def get_classification_head(self) -> nn.Sequential:
+        return nn.Sequential(nn.Linear(768, 1))

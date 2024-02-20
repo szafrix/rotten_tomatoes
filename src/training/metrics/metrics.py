@@ -8,7 +8,6 @@ from torchmetrics.classification import (
     BinaryF1Score,
     BinaryConfusionMatrix,
 )
-from lightning import seed_everything
 
 import wandb
 
@@ -17,8 +16,6 @@ from PIL import Image
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-seed_everything(42)
 
 
 class ModelMetrics(nn.Module):
