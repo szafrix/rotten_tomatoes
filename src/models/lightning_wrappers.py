@@ -2,7 +2,7 @@ import torch
 from lightning import LightningModule
 from lightning.pytorch.loggers import WandbLogger
 
-from training.metrics.metrics import ModelMetrics
+from src.training.metrics.metrics import ModelMetrics
 from src.models.base_classes import BaseModel
 
 

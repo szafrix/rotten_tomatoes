@@ -1,6 +1,6 @@
 import torch
 from lightning.pytorch.callbacks.callback import Callback
-
+import inspect
 from typing import List, Optional
 
 from src.config.schemas import ModelConfig, OptimizerConfig, CallbacksConfig
@@ -26,7 +26,13 @@ def optimizer_factory(
         config.kwargs["lr"] = float(lr)
     if betas := config.kwargs.get("betas"):
         config.kwargs["betas"] = eval(betas)
-    return getattr(torch.optim, config.name)(params=model_parameters, **config.kwargs)
+    optim_cls = getattr(torch.optim, config.name)
+    valid_args = {
+        k: v
+        for k, v in config.kwargs.items()
+        if k in inspect.getfullargspec(optim_cls.__init__).args
+    }
+    return optim_cls(params=model_parameters, **valid_args)
 
 
 def callbacks_factory(config: CallbacksConfig) -> List[Optional[Callback]]:

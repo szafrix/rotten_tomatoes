@@ -11,21 +11,28 @@ import wandb
 import torch
 from dotenv import load_dotenv
 from src.utils.wandb import wandb_login_ensure_personal_account
-from src.training.utils import parse_args, setup, cleanup
+from src.training.utils import parse_args, setup, cleanup, parse_sweep_params
 
 from dataclasses import asdict
 
 seed_everything(42)
 torch.set_float32_matmul_precision("high")
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 def main():
     args = parse_args()
-    config, data, model, optimizer, callbacks, model_l = setup(args.config_path)
 
     wandb_login_ensure_personal_account()
+    wandb.init()
+    if sweep_config := wandb.config:
+        sweep_config = parse_sweep_params(sweep_config)
+    wandb.finish()
+
+    config, data, model, optimizer, callbacks, model_l = setup(
+        args.config_path, sweep_config
+    )
     data.setup()
 
     wandb_logger = WandbLogger(
