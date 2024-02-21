@@ -17,6 +17,12 @@ def parse_args():
         type=str,
         help="Path to .yaml file that contains configuration details",
     )
+    parser.add_argument(
+        "--run_debugger",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Run some tests to check the training pipeline",
+    )
     return parser.parse_args()
 
 

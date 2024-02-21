@@ -12,6 +12,7 @@ import torch
 from dotenv import load_dotenv
 from src.utils.wandb import wandb_login_ensure_personal_account
 from src.training.utils import parse_args, setup, cleanup, parse_sweep_params
+from src.training.debugging.tests import run_debugger
 
 from dataclasses import asdict
 
@@ -34,6 +35,9 @@ def main():
         args.config_path, sweep_config
     )
     data.setup()
+
+    if args.run_debugger:
+        run_debugger(model_l, data)
 
     wandb_logger = WandbLogger(
         project="rotten-tomatoes",
