@@ -14,24 +14,20 @@ metric:
   goal: maximize
 parameters:
   data__batch_size:
-    values: [16, 32, 64, 128]
+    values: [8, 16, 32, 64, 128]
   optimizer__name:
-    values: ["Adam", "AdamW", "SGD", "RMSprop"]
+    values: ["AdamW"]
   optimizer__kwargs__lr:
     distribution: log_uniform_values
-    min: 1e-5
-    max: 5e-2
+    min: 0.0002
+    max: 0.001
   optimizer__kwargs__weight_decay:
-    values: [0, 1e-1, 1e-2, 1e-3, 1e-4]
+    values: [0, 1e-4, 1e-5]
   optimizer__kwargs__beta1:
     distribution: uniform
-    min: 0.85
-    max: 0.95
+    min: 0.84
+    max: 0.9
   optimizer__kwargs__beta2:
     distribution: uniform
-    min: 0.95
-    max: 0.999
-  optimizer__kwargs__alpha:
-    distribution: uniform
-    min: 0.9
+    min: 0.975
     max: 0.999

@@ -24,8 +24,8 @@ def optimizer_factory(
 ) -> torch.optim.Optimizer:
     if lr := config.kwargs.get("lr"):
         config.kwargs["lr"] = float(lr)
-    if betas := config.kwargs.get("betas"):
-        config.kwargs["betas"] = eval(betas)
+    if (beta1 := config.kwargs.get("beta1")) and (beta2 := config.kwargs.get("beta2")):
+        config.kwargs["betas"] = (float(beta1), float(beta2))
     optim_cls = getattr(torch.optim, config.name)
     valid_args = {
         k: v
