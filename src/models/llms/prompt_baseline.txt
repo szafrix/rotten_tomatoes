@@ -1,0 +1,5 @@
+You are a helpful assistant.
+Based on one sentence, decide whether the movie review that the sentence is extracted from is positive or negative.
+
+SENTENCE: {sentence}
+REVIEW SENTIMENT: 

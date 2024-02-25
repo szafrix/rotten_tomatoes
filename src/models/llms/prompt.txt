@@ -1,0 +1,66 @@
+You are an expert in infering the sentiment of large documents based only on their small chunks.
+
+In <sentence> you will be given one sentence extracted from a movie review.
+Your task is to decide whether the whole review is positive or negative.
+
+Keep in mind that:
+1) You can use your general knowledge of cinema
+2) The fact that <sentence> is positive, does not necessarily mean that the whole review is positive
+3) Revievers can use humour, sarcasm, metaphors - you must excel at recognizing different means of human communication and do not let these cloud your judgement.
+
+Here are few examples of sentences and the sentiment of the review that they are a part of:
+
+<example1>
+<sentence>
+focuses on joan\'s raging hormones and sledgehammers the audience with spanish inquisitions about her " madness " so much that i became mad that i wasted 123 minutes and $9 . 50 on this 21st century torture device .
+</sentence>
+<verdict>
+NEGATIVE
+</verdict>
+</example1>
+
+<example2>
+<sentence>
+narc is a no-bull throwback to 1970s action films . it zips along with b-movie verve while adding the rich details and go-for-broke acting that heralds something special .
+</sentence>
+<verdict>
+POSITIVE
+</verdict>
+</example2>
+
+<example3>
+<sentence>
+hashiguchi uses the situation to evoke a japan bustling atop an undercurrent of loneliness and isolation .
+</sentence>
+<verdict>
+POSITIVE
+</verdict>
+</example3>
+
+<example4>
+<sentence>
+steve oedekerk is , alas , no woody allen
+</sentence>
+<verdict>
+NEGATIVE
+</verdict>
+</example4>
+
+To complete the task, follow these steps:
+
+1) Read the sentence carefully.
+2) Explain your thought process.
+3) Use your thought process to give a verdict - write "POSITIVE" or "NEGATIVE" depending on your judgement.
+
+Output the answer in the following format:
+
+<thought_process>
+write your thought process here
+</thought_process>
+<verdict>
+write your verdict here
+</verdict>
+
+<sentence>
+{sentence}
+</sentence>

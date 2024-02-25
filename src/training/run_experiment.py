@@ -36,8 +36,8 @@ def main():
     )
     data.setup()
 
-    if args.run_debugger:
-        run_debugger(model_l, data)
+    # if args.run_debugger:
+    #    run_debugger(model_l, data)
 
     wandb_logger = WandbLogger(
         project="rotten-tomatoes",
