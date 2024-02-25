@@ -21,8 +21,8 @@ class BaselineBERTLogisticRegressionModel(PretrainedHuggingFaceModel):
     def __init__(self, config: ModelConfig):
         super().__init__(config)
         self.cls_head = self.get_classification_head()
-        init.xavier_uniform_(self.cls_head[0].weight)
-        init.zeros_(self.cls_head[0].bias)
+        init.xavier_uniform_(self.cls_head[-1].weight)
+        init.zeros_(self.cls_head[-1].bias)
 
     def get_classification_head(self) -> nn.Sequential:
-        return nn.Sequential(nn.Linear(768, 1))
+        return nn.Sequential(nn.Dropout(0.5), nn.Linear(768, 1))

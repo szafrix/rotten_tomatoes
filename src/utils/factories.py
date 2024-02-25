@@ -9,6 +9,7 @@ from src.models.baselines import (
     InputIndependentBaselineModel,
     BaselineBERTLogisticRegressionModel,
 )
+from src.models.deeper_frozen_bert import FrozenBERTWithDeeperHead
 from src.training.callbacks.model_checkpoint_callback import model_checkpoint_callback
 
 
@@ -16,6 +17,10 @@ def model_factory(config: ModelConfig) -> BaseModel:
     if config.name == "InputIndependentBaselineModel":
         return InputIndependentBaselineModel(config)
     if config.name == "BaselineBERTLogisticRegressionModel":
+        return BaselineBERTLogisticRegressionModel(config)
+    if config.name == "FrozenBERTWithDeeperHead":
+        return FrozenBERTWithDeeperHead(config)
+    if config.name == "UnfreezedBaselineBERTLogisticRegressionModel":
         return BaselineBERTLogisticRegressionModel(config)
 
 

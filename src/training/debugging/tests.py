@@ -30,7 +30,6 @@ class TrainingPipelineDebugger:
     def test_overfit_on_single_batch(self):
         data = deepcopy(self.data)
         model = deepcopy(self.model_l)
-        model.optimizer.param_groups[0]["lr"] = 2e-2
         data.config.batch_size = 2
         data.setup()
         trainer = Trainer(

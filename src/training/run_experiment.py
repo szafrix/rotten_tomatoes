@@ -26,10 +26,9 @@ def main():
     args = parse_args()
 
     wandb_login_ensure_personal_account()
-    wandb.init()
+    wandb.init(project="rotten-tomatoes")
     if sweep_config := wandb.config:
         sweep_config = parse_sweep_params(sweep_config)
-    wandb.finish()
 
     config, data, model, optimizer, callbacks, model_l = setup(
         args.config_path, sweep_config
@@ -45,7 +44,7 @@ def main():
         log_model=True,
     )
     wandb_logger.experiment.config["run_config"] = asdict(config)
-    wandb_logger.watch(model_l)
+    wandb_logger.watch(model, log="all")
 
     trainer = Trainer(
         max_epochs=config.training.max_epochs,

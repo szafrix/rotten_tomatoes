@@ -6,9 +6,9 @@ data:
   tokenize_padding: False
   tokenize_truncation: True
   batch_size: 128
-  num_workers_train: 12
-  num_workers_val: 12
-  num_workers_test: 12
+  num_workers_train: 10
+  num_workers_val: 10
+  num_workers_test: 10
   shuffle_train: True
   shuffle_val: False
   shuffle_test: False
@@ -20,10 +20,11 @@ model:
   freeze_weights: True
 
 optimizer:
-  name: RMSprop
+  name: AdamW
   kwargs:
     lr: 3e-4
-    alpha: 0.9
+    beta1: 0.9
+    beta2: 0.99
     weight_decay: 0
 
 training:

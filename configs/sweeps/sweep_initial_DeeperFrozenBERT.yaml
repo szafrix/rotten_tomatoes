@@ -1,4 +1,4 @@
-name: AdamW_BaselineBERTLogisticRegressionModel
+name: InitialDeeperFrozenBERT
 count: 100
 program: src/training/run_experiment.py
 interpreter: PYTHONPATH=. pdm run python
@@ -6,7 +6,7 @@ command:
   - ${interpreter}
   - ${program}
   - "--config_path"
-  - "configs/models/BaselineBERTLogisticRegressionModel.yaml"
+  - "configs/models/FrozenBERTWithDeeperHead.yaml"
 
 method: random
 metric:
