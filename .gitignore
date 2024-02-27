@@ -172,3 +172,7 @@ training/training
 wandb
 model_ckpts
 checkpoints
+
+# scraper
+rt_scraper/logs
+rt_scraper/results
