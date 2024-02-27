@@ -1,8 +1,3 @@
-import sys
-
-sys.path.append("/home/bszafranski/projects/private/rotten_tomatoes/")
-
-
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
 
@@ -33,8 +28,8 @@ def main():
     config, data, model, optimizer, callbacks, model_l = setup(
         args.config_path, sweep_config
     )
+    # data.prepare_data()
     data.setup()
-
     if args.run_debugger:
         run_debugger(model_l, data)
 

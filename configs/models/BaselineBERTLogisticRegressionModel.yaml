@@ -5,10 +5,10 @@ data:
   shuffle_upon_saving: True
   tokenize_padding: False
   tokenize_truncation: True
-  batch_size: 128
-  num_workers_train: 12
-  num_workers_val: 12
-  num_workers_test: 12
+  batch_size: 32
+  num_workers_train: 31
+  num_workers_val: 31
+  num_workers_test: 31
   shuffle_train: True
   shuffle_val: False
   shuffle_test: False
@@ -22,9 +22,9 @@ model:
 optimizer:
   name: RMSprop
   kwargs:
-    lr: 3e-4
-    alpha: 0.9
-    weight_decay: 0
+    lr: 0.003215931980844045
+    alpha: 0.8681532622849862
+    weight_decay: 0.00001
 
 training:
   max_epochs: 40
@@ -35,11 +35,11 @@ training:
 
 callbacks:
   model_checkpoint:
-    save_top_k: 0
-    monitor: 'val/loss'
+    save_top_k: 1
+    monitor: 'val/accuracy'
     mode: 'min'
     auto_insert_metric_name: False
-    save_weights_only: True
+    save_weights_only: False
     every_n_train_steps: null
     dirpath: './tmpdir'
     filename: '{epoch}-{val/loss:.2f}'
