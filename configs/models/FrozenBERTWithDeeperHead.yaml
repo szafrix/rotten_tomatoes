@@ -5,7 +5,7 @@ data:
   shuffle_upon_saving: True
   tokenize_padding: False
   tokenize_truncation: True
-  batch_size: 32
+  batch_size: 16
   num_workers_train: 12
   num_workers_val: 12
   num_workers_test: 12
@@ -22,13 +22,13 @@ model:
 optimizer:
   name: AdamW
   kwargs:
-    lr: 0.0003
-    beta1: 0.9
-    beta2: 0.99
-    weight_decay: 0.0001
+    lr: 0.00417114547444194
+    beta1: 0.8664109387252216
+    beta2: 0.9720581921068384
+    weight_decay: 0 # Adam basically
 
 training:
-  max_epochs: 13
+  max_epochs: 40
   accelerator: 'auto'
   check_val_every_n_epoch: 1
   log_every_n_steps: 1
@@ -44,3 +44,7 @@ callbacks:
     every_n_train_steps: null
     dirpath: './tmpdir'
     filename: '{epoch}-{val/loss:.2f}'
+  early_stopping:
+    monitor: 'val/loss'
+    patience: 5
+    mode: 'min'

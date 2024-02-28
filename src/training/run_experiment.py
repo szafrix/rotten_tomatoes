@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.append(os.environ.get("PROJECT_DIR"))
+
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
 
@@ -35,7 +40,7 @@ def main():
 
     wandb_logger = WandbLogger(
         project="rotten-tomatoes",
-        tags=[model.__name__()],
+        tags=[config.model.name],
         log_model=True,
     )
     wandb_logger.experiment.config["run_config"] = asdict(config)
