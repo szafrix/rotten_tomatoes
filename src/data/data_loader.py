@@ -2,48 +2,59 @@ from datasets import load_dataset, DatasetDict
 from transformers import AutoTokenizer, DataCollatorWithPadding
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader
+from src.config.schemas import DataConfig, GLOBAL_SEED
 
 
 class RottenDataLoader(LightningDataModule):
-    def __init__(self, config):
+    def __init__(self, config: DataConfig):
         super().__init__()
         self.config = config
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config["model_checkpoint"])
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_model_name)
         self.data_collator = DataCollatorWithPadding(
             tokenizer=self.tokenizer, return_tensors="pt"
         )
 
     def prepare_data(self):
-        ds = load_dataset(self.config["dataset_name"])
+        ds = load_dataset(self.config.hf_dataset_name)
         ds = ds.map(self.tokenize, batched=True)
-        ds.save_to_disk(self.config["dataset_local_path"])
+        if self.config.shuffle_upon_saving:
+            ds = ds.shuffle(seed=GLOBAL_SEED)
+        ds.save_to_disk(self.config.path_to_save_dataset)
 
     def setup(self, stage=None):
-        self.dataset = DatasetDict.load_from_disk(self.config["dataset_local_path"])
+        dataset = DatasetDict.load_from_disk(self.config.path_to_save_dataset)
+        self.dataset = dataset.remove_columns(["text"]).with_format("torch")
 
     def train_dataloader(self):
         return DataLoader(
             self.dataset["train"],
-            batch_size=self.config["batch_size"],
-            shuffle=True,
+            batch_size=self.config.batch_size,
+            num_workers=self.config.num_workers_train,
+            shuffle=self.config.shuffle_train,
             collate_fn=self.data_collator,
         )
 
     def val_dataloader(self):
         return DataLoader(
             self.dataset["validation"],
-            batch_size=self.config["batch_size"],
-            shuffle=True,
+            batch_size=self.config.batch_size,
+            num_workers=self.config.num_workers_val,
+            shuffle=self.config.shuffle_val,
             collate_fn=self.data_collator,
         )
 
     def test_dataloader(self):
         return DataLoader(
             self.dataset["test"],
-            batch_size=self.config["batch_size"],
-            shuffle=True,
+            batch_size=self.config.batch_size,
+            num_workers=self.config.num_workers_test,
+            shuffle=self.config.shuffle_test,
             collate_fn=self.data_collator,
         )
 
     def tokenize(self, batch):
-        return self.tokenizer(batch["text"], padding=False, truncation=True)
+        return self.tokenizer(
+            batch["text"],
+            padding=self.config.tokenize_padding,
+            truncation=self.config.tokenize_truncation,
+        )
