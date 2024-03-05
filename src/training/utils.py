@@ -5,7 +5,7 @@ from typing import Tuple, Any
 from src.utils.factories import model_factory, optimizer_factory, callbacks_factory
 from src.config.utils import parse_config
 from src.data.data_loader import RottenDataLoader
-from src.models.lightning_wrappers import (
+from src.models.classifiers.lightning_wrappers import (
     LightingModelWrapperForMulticlassClassification,
 )
 

@@ -4,7 +4,7 @@ from transformers import AutoModel
 import numpy as np
 
 from src.config.schemas import ModelConfig
-from src.models.base_classes import BaseModel, PretrainedHuggingFaceModel
+from models.classifiers.base_classes import BaseModel, PretrainedHuggingFaceModel
 
 
 class InputIndependentBaselineModel(BaseModel):
@@ -25,4 +25,4 @@ class BaselineBERTLogisticRegressionModel(PretrainedHuggingFaceModel):
         init.zeros_(self.cls_head[-1].bias)
 
     def get_classification_head(self) -> nn.Sequential:
-        return nn.Sequential(nn.Dropout(0.5), nn.Linear(768, 1))
+        return nn.Sequential(nn.Linear(768, 1))
