@@ -1,7 +1,7 @@
+import os
 import sys
 
-sys.path.append("/home/bszafranski/projects/private/rotten_tomatoes/")
-
+sys.path.append(os.environ.get("PROJECT_DIR"))
 
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
@@ -26,26 +26,25 @@ def main():
     args = parse_args()
 
     wandb_login_ensure_personal_account()
-    wandb.init()
+    wandb.init(project="rotten-tomatoes")
     if sweep_config := wandb.config:
         sweep_config = parse_sweep_params(sweep_config)
-    wandb.finish()
 
     config, data, model, optimizer, callbacks, model_l = setup(
         args.config_path, sweep_config
     )
+    # data.prepare_data()
     data.setup()
-
-    # if args.run_debugger:
-    #    run_debugger(model_l, data)
+    if args.run_debugger:
+        run_debugger(model_l, data)
 
     wandb_logger = WandbLogger(
         project="rotten-tomatoes",
-        tags=[model.__name__()],
+        tags=[config.model.name],
         log_model=True,
     )
     wandb_logger.experiment.config["run_config"] = asdict(config)
-    wandb_logger.watch(model_l)
+    wandb_logger.watch(model, log="all")
 
     trainer = Trainer(
         max_epochs=config.training.max_epochs,

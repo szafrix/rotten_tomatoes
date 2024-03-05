@@ -57,14 +57,32 @@ class ModelCheckpointCallbackConfig:
 
 
 @dataclass
+class EarlyStoppingCallbackConfig:
+    monitor: str
+    patience: int
+    mode: str
+
+
+@dataclass
 class CallbacksConfig:
     model_checkpoint: ModelCheckpointCallbackConfig
+    early_stopping: Optional[EarlyStoppingCallbackConfig]
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        return cls(
-            model_checkpoint=ModelCheckpointCallbackConfig(**obj["model_checkpoint"]),
-        )
+        if obj.get("early_stopping"):
+            return cls(
+                model_checkpoint=ModelCheckpointCallbackConfig(
+                    **obj["model_checkpoint"]
+                ),
+                early_stopping=EarlyStoppingCallbackConfig(**obj["early_stopping"]),
+            )
+        else:
+            return cls(
+                model_checkpoint=ModelCheckpointCallbackConfig(
+                    **obj["model_checkpoint"]
+                ),
+            )
 
 
 @dataclass

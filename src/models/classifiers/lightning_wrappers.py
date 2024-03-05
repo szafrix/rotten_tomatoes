@@ -18,6 +18,7 @@ class LightingModelWrapperForMulticlassClassification(LightningModule):
         self.val_metrics = ModelMetrics(prefix="val/")
 
         self.save_hyperparameters(ignore=["model"])
+        # self.log_dict({"model_architecture": str(model.model)})
 
     def forward(self, inputs):
         return self.model(inputs)
