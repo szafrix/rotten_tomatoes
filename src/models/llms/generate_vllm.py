@@ -5,12 +5,12 @@ from vllm.model_executor.parallel_utils.parallel_state import destroy_model_para
 import torch
 import gc
 
-with open("src/models/llms/prompt_baseline.txt", "r") as f:
+with open("src/models/llms/prompt.txt", "r") as f:
     prompt = f.read()
 
 
 sampling_params = SamplingParams(
-    temperature=0, top_p=1, top_k=-1, max_tokens=15, stop="#endofverdict"
+    temperature=0, top_p=1, top_k=-1, max_tokens=256, stop="</verdict>"
 )
 
 models = [
@@ -43,11 +43,11 @@ for model in models:
 
     else:
         try:
-            prompts = [prompt.format(sentence=text) for text in val["text"].values[:5]]
+            prompts = [prompt.format(sentence=text) for text in val["text"].values]
 
             outputs = llm.generate(prompts, sampling_params)
-            outputs = [o.outputs[0].text for o in outputs]
-            for p, o in zip(val["text"].values[:5], outputs):
+            outputs = [o.outputs[0].text + "</verdict>" for o in outputs]
+            for p, o in zip(val["text"].values, outputs):
                 print("OUTPUT: ", o)
                 print("\n")
                 print("---" * 30)
@@ -55,8 +55,8 @@ for model in models:
             results.append(
                 pd.DataFrame(
                     {
-                        "texts": val["text"].values[:5],
-                        "labels": val["label"].values[:5],
+                        "texts": val["text"].values,
+                        "labels": val["label"].values,
                         "llm_completion": outputs,
                         "llm_name": model,
                     }
@@ -72,5 +72,4 @@ for model in models:
             torch.cuda.empty_cache()
             torch.distributed.destroy_process_group()
 
-pd.concat(results).to_pickle("src/models/llms/results_simpler")
-## working models
+pd.concat(results).to_pickle("src/models/llms/results")

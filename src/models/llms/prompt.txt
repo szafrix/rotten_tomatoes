@@ -8,57 +8,50 @@ Keep in mind that:
 2) The fact that <sentence> is positive, does not necessarily mean that the whole review is positive
 3) Revievers can use humour, sarcasm, metaphors - you must excel at recognizing different means of human communication and do not let these cloud your judgement.
 
-Here are few examples of sentences and the sentiment of the review that they are a part of:
-
-<example1>
-<sentence>
-focuses on joan\'s raging hormones and sledgehammers the audience with spanish inquisitions about her " madness " so much that i became mad that i wasted 123 minutes and $9 . 50 on this 21st century torture device .
-</sentence>
-<verdict>
-NEGATIVE
-</verdict>
-</example1>
-
-<example2>
-<sentence>
-narc is a no-bull throwback to 1970s action films . it zips along with b-movie verve while adding the rich details and go-for-broke acting that heralds something special .
-</sentence>
-<verdict>
-POSITIVE
-</verdict>
-</example2>
-
-<example3>
-<sentence>
-hashiguchi uses the situation to evoke a japan bustling atop an undercurrent of loneliness and isolation .
-</sentence>
-<verdict>
-POSITIVE
-</verdict>
-</example3>
-
-<example4>
-<sentence>
-steve oedekerk is , alas , no woody allen
-</sentence>
-<verdict>
-NEGATIVE
-</verdict>
-</example4>
-
 To complete the task, follow these steps:
 
 1) Read the sentence carefully.
 2) Explain your thought process.
 3) Use your thought process to give a verdict - write "POSITIVE" or "NEGATIVE" depending on your judgement.
 
-Output the answer in the following format:
-
-<thought_process>
-write your thought process here
-</thought_process>
+<sentence>
+focuses on joan\'s raging hormones and sledgehammers the audience with spanish inquisitions about her " madness " so much that i became mad that i wasted 123 minutes and $9 . 50 on this 21st century torture device .
+</sentence>
+<thought process>
+Negative words/phrases: "raging hormones", "sledgehammers", "madness", "wasted", "torture device" The sentence is clearly expressing a negative sentiment towards the movie.
+</thought process>
 <verdict>
-write your verdict here
+NEGATIVE
+</verdict>
+
+<sentence>
+narc is a no-bull throwback to 1970s action films . it zips along with b-movie verve while adding the rich details and go-for-broke acting that heralds something special .
+</sentence>
+<thought process>
+Positive words/phrases: "no-bull", "zips along", "rich details", "go-for-broke acting", "something special" The sentence is praising the movie and expressing a positive sentiment.
+</thought process>
+<verdict>
+POSITIVE
+</verdict>
+
+<sentence>
+hashiguchi uses the situation to evoke a japan bustling atop an undercurrent of loneliness and isolation .
+</sentence>
+<thought process>
+Neutral sentence, but the mention of "loneliness and isolation" could be interpreted as a positive or negative sentiment depending on the context.
+</thought process>
+<verdict>
+POSITIVE
+</verdict>
+
+<sentence>
+steve oedekerk is , alas , no woody allen
+</sentence>
+<thought process>
+Negative phrase: "alas, no woody allen" implies a negative comparison.
+</thought process>
+<verdict>
+NEGATIVE
 </verdict>
 
 <sentence>
