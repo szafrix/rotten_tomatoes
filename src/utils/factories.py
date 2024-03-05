@@ -4,8 +4,8 @@ import inspect
 from typing import List, Optional
 
 from src.config.schemas import ModelConfig, OptimizerConfig, CallbacksConfig
-from src.models.base_classes import BaseModel
-from src.models.baselines import (
+from src.models.classifiers.base_classes import BaseModel
+from src.models.classifiers.baselines import (
     InputIndependentBaselineModel,
     BaselineBERTLogisticRegressionModel,
 )
