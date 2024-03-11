@@ -4,7 +4,7 @@ from transformers import AutoModel
 import numpy as np
 
 from src.config.schemas import ModelConfig
-from models.classifiers.base_classes import BaseModel, PretrainedHuggingFaceModel
+from src.models.classifiers.base_classes import BaseModel, PretrainedHuggingFaceModel
 
 
 class InputIndependentBaselineModel(BaseModel):

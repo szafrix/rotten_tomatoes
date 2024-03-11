@@ -3,7 +3,7 @@ from lightning import LightningModule
 from lightning.pytorch.loggers import WandbLogger
 
 from src.training.metrics.metrics import ModelMetrics
-from models.classifiers.base_classes import BaseModel
+from src.models.classifiers.base_classes import BaseModel
 
 
 class LightingModelWrapperForMulticlassClassification(LightningModule):

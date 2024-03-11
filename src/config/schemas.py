@@ -20,6 +20,8 @@ class DataConfig:
     shuffle_train: bool
     shuffle_val: bool
     shuffle_test: bool
+    # augmentation
+    path_to_scraped_json: Optional[str] = None
 
 
 @dataclass
@@ -66,7 +68,7 @@ class EarlyStoppingCallbackConfig:
 @dataclass
 class CallbacksConfig:
     model_checkpoint: ModelCheckpointCallbackConfig
-    early_stopping: Optional[EarlyStoppingCallbackConfig]
+    early_stopping: Optional[EarlyStoppingCallbackConfig] = None
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
