@@ -23,6 +23,20 @@ class DataConfig:
     # augmentation
     path_to_scraped_json: Optional[str] = None
 
+@dataclass
+class DataConfigForMaskedLM:
+    path_to_json: str
+    path_to_save_dataset: str
+    tokenizer_model_name: str
+    tokenize_padding: bool
+    tokenize_truncation: bool
+    batch_size: int
+    num_workers_train: int
+    num_workers_val: int
+    num_workers_test: int
+    shuffle_train: bool
+    shuffle_val: bool
+    shuffle_test: bool
 
 @dataclass
 class ModelConfig:

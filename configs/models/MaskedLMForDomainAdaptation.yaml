@@ -1,0 +1,13 @@
+data:
+  path_to_json: 'rt_scraper/results/scraped_dataset_sans_already_present_quotes.json'
+  path_to_save_dataset: 'data/dataset_for_masked_lm'
+  tokenizer_model_name: 'bert-base-uncased'
+  tokenize_padding: False
+  tokenize_truncation: False
+  batch_size: 256
+  num_workers_train: 10
+  num_workers_val: 10
+  num_workers_test: 10
+  shuffle_train: True
+  shuffle_val: False
+  shuffle_test: False
