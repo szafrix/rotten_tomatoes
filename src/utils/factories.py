@@ -9,7 +9,7 @@ from src.models.classifiers.baselines import (
     InputIndependentBaselineModel,
     BaselineBERTLogisticRegressionModel,
 )
-from src.models.deeper_frozen_bert import FrozenBERTWithDeeperHead
+from src.models.classifiers.deeper_frozen_bert import FrozenBERTWithDeeperHead
 from src.training.callbacks.model_checkpoint_callback import model_checkpoint_callback
 from src.training.callbacks.early_stopping_callback import early_stopping_callback
 
