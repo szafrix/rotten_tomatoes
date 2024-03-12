@@ -1,6 +1,6 @@
 from torch import nn
 import torch.nn.init as init
-from src.models.base_classes import PretrainedHuggingFaceModel
+from src.models.classifiers.base_classes import PretrainedHuggingFaceModel
 from src.config.schemas import ModelConfig
 
 

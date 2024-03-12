@@ -1,14 +1,12 @@
 import os
 import sys
 
-sys.path.append(os.environ.get("PROJECT_DIR"))
-
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
 
+import torch
 from lightning import Trainer
 import wandb
-import torch
 from dotenv import load_dotenv
 from src.utils.wandb import wandb_login_ensure_personal_account
 from src.training.utils import parse_args, setup, cleanup, parse_sweep_params
@@ -33,7 +31,7 @@ def main():
     config, data, model, optimizer, callbacks, model_l = setup(
         args.config_path, sweep_config
     )
-    # data.prepare_data()
+    data.prepare_data()
     data.setup()
     if args.run_debugger:
         run_debugger(model_l, data)

@@ -5,7 +5,7 @@ data:
   shuffle_upon_saving: True
   tokenize_padding: False
   tokenize_truncation: True
-  batch_size: 16
+  batch_size: 256
   num_workers_train: 10
   num_workers_val: 10
   num_workers_test: 10
@@ -15,17 +15,17 @@ data:
 
 
 model:
-  name: 'UnfreezedBaselineBERTLogisticRegressionModel'
+  name: 'UnfrozenBERT'
   hf_pretrained_model_name: 'bert-base-uncased'
   freeze_weights: False
 
 optimizer:
   name: AdamW
   kwargs:
-    lr: 2e-5
+    lr: 9e-6
     beta1: 0.9
     beta2: 0.99
-    weight_decay: 0.3
+    weight_decay: 0.1
 
 training:
   max_epochs: 2
