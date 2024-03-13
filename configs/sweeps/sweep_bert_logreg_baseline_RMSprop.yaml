@@ -1,6 +1,6 @@
 name: RMSprop_BaselineBERTLogisticRegressionModel
 count: 40
-program: src/training/run_experiment.py
+program: classification/training/run_experiment.py
 interpreter: PYTHONPATH=. pdm run python
 command:
   - ${interpreter}
