@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoModelForMaskedLM, AdamW
+from transformers import BertForMaskedLM
 
 from masked_lm.config.schemas import ModelConfig
 
@@ -8,7 +8,7 @@ class RottenTomatoesDomainAdaptationModel(torch.nn.Module):
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config
-        self.model = AutoModelForMaskedLM.from_pretrained(
+        self.model = BertForMaskedLM.from_pretrained(
             self.config.hf_pretrained_model_name
         )
 

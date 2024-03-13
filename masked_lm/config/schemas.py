@@ -35,6 +35,7 @@ class OptimizerConfig:
     name: str
     kwargs: Optional[Dict[str, Any]]
 
+
 @dataclass
 class TrainingConfig:
     max_epochs: int
@@ -42,3 +43,20 @@ class TrainingConfig:
     check_val_every_n_epoch: int
     log_every_n_steps: int
     detect_anomaly: bool
+
+
+@dataclass
+class ExperimentConfig:
+    data: DataConfigForMaskedLM
+    model: ModelConfig
+    optimizer: OptimizerConfig
+    training: TrainingConfig
+
+    @classmethod
+    def from_dict(cls, obj: Dict) -> Self:
+        return cls(
+            data=DataConfigForMaskedLM(**obj["data"]),
+            model=ModelConfig(**obj["model"]),
+            optimizer=OptimizerConfig(**obj["optimizer"]),
+            training=TrainingConfig(**obj["training"]),
+        )

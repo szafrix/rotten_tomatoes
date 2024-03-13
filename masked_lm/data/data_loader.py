@@ -31,14 +31,13 @@ class RottenDataLoaderForMaskedLM(LightningDataModule):
             ds = ds.shuffle(seed=GLOBAL_SEED)
         if self.config.drop_unnecessary_columns:
             ds = ds.remove_columns(["text", "label", "token_type_ids"])
-        ds = self.split_dataset_into_equally_sized_chunks(ds)
+        ds = ds.map(self.split_dataset_into_equally_sized_chunks, batched=True)
         ds = ds.train_test_split(train_size=self.config.train_size, seed=GLOBAL_SEED)
         ds.save_to_disk(self.config.path_to_save_dataset)
 
     def setup(self, stage=None):
         dataset = DatasetDict.load_from_disk(self.config.path_to_save_dataset)
-        dataset = dataset.with_format("torch")
-        return dataset
+        self.dataset = dataset.with_format("torch")
 
     def train_dataloader(self):
         return DataLoader(

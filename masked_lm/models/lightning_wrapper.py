@@ -19,12 +19,7 @@ class LightingModelWrapperForMaskedLM(LightningModule):
     def forward(self, inputs):
         return self.model(inputs)
 
-    def on_train_start(self):
-        self.train_metrics.to(self.device)
-        self.val_metrics.to(self.device)
-
     def training_step(self, batch, batch_idx):
-        self()
         return self._step(batch, batch_idx, "train")
 
     def validation_step(self, batch, batch_idx):
