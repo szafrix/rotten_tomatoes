@@ -1,0 +1,36 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Bartosz Szafranski", email = "b.szafranski@tidio.net"},
+]
+dependencies = [
+    "transformers>=4.37.2",
+    "datasets>=2.16.1",
+    "langid>=1.1.6",
+    "torch>=2.2.0",
+    "lightning>=2.1.4",
+    "tokenizers>=0.15.1",
+    "wandb>=0.16.3",
+    "seaborn>=0.13.2",
+    "python-dotenv>=1.0.1",
+    "bs4>=0.0.2",
+    "lxml>=5.1.0",
+    "thefuzz>=0.22.1",
+    "vllm>=0.2.5",
+    "tiktoken>=0.6.0",
+]
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[project.optional-dependencies]
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "matplotlib>=3.8.2",
+    "ipykernel>=6.29.2",
+]
