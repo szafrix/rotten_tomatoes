@@ -34,3 +34,4 @@ dev = [
     "matplotlib>=3.8.2",
     "ipykernel>=6.29.2",
 ]
+
