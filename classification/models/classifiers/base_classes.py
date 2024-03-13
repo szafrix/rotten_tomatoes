@@ -60,8 +60,15 @@ class PretrainedHuggingFaceModelAfterDomainAdaptation(BaseModel):
         x = self.cls_head(x)
         return x
 
-    def load_model_from_hf(self):
+    def load_model_from_file(self):
         model = AutoModel.from_pretrained(self.config.hf_pretrained_model_name)
+        cpkt_path = "rotten-tomatoes/4r9stwh5/checkpoints/epoch=4-step=525.ckpt"
+        state_dict = torch.load(cpkt_path)
+        state_dict = {
+            k.replace("model.model.bert.", ""): v
+            for k, v in state_dict["state_dict"].items()
+        }
+        model = model.load_state_dict(state_dict)
         if self.config.freeze_weights:
             for p in model.parameters():
                 p.requires_grad = False

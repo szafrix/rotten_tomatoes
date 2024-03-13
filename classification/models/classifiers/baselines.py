@@ -7,6 +7,7 @@ from classification.config.schemas import ModelConfig
 from classification.models.classifiers.base_classes import (
     BaseModel,
     PretrainedHuggingFaceModel,
+    PretrainedHuggingFaceModelAfterDomainAdaptation,
 )
 
 
@@ -20,6 +21,18 @@ class InputIndependentBaselineModel(BaseModel):
 
 
 class BaselineBERTLogisticRegressionModel(PretrainedHuggingFaceModel):
+
+    def __init__(self, config: ModelConfig):
+        super().__init__(config)
+        self.cls_head = self.get_classification_head()
+        init.xavier_uniform_(self.cls_head[-1].weight)
+        init.zeros_(self.cls_head[-1].bias)
+
+    def get_classification_head(self) -> nn.Sequential:
+        return nn.Sequential(nn.Linear(768, 1))
+
+
+class DomainAdaptedBERTWithSimpleHead(PretrainedHuggingFaceModelAfterDomainAdaptation):
 
     def __init__(self, config: ModelConfig):
         super().__init__(config)

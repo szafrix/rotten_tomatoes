@@ -8,6 +8,7 @@ from classification.models.classifiers.base_classes import BaseModel
 from classification.models.classifiers.baselines import (
     InputIndependentBaselineModel,
     BaselineBERTLogisticRegressionModel,
+    DomainAdaptedBERTWithSimpleHead,
 )
 from classification.models.classifiers.deeper_frozen_bert import (
     FrozenBERTWithDeeperHead,
@@ -31,6 +32,8 @@ def model_factory(config: ModelConfig) -> BaseModel:
         return BaselineBERTLogisticRegressionModel(config)
     if config.name == "UnfrozenBERTAugmentedDatasetWithScrapedData":
         return BaselineBERTLogisticRegressionModel(config)
+    if "DomainAdaptation" in config.name:
+        return DomainAdaptedBERTWithSimpleHead(config)
 
 
 def optimizer_factory(
