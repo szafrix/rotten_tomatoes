@@ -34,3 +34,11 @@ class ModelConfig:
 class OptimizerConfig:
     name: str
     kwargs: Optional[Dict[str, Any]]
+
+@dataclass
+class TrainingConfig:
+    max_epochs: int
+    accelerator: str
+    check_val_every_n_epoch: int
+    log_every_n_steps: int
+    detect_anomaly: bool

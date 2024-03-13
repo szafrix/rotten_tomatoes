@@ -1,6 +1,8 @@
 import os
 import sys
 
+sys.path.append(os.environ.get("PROJECT_DIR"))
+
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
 

@@ -10,8 +10,8 @@ import torch
 from lightning import Trainer
 import wandb
 from dotenv import load_dotenv
-from classification.utils.wandb import wandb_login_ensure_personal_account
-from classification.training.utils import parse_args, setup, cleanup, parse_sweep_params
+from masked_lm.utils.wandb import wandb_login_ensure_personal_account
+from masked_lm.training.utils import parse_args, setup, parse_sweep_params
 
 from dataclasses import asdict
 
@@ -29,13 +29,9 @@ def main():
     if sweep_config := wandb.config:
         sweep_config = parse_sweep_params(sweep_config)
 
-    config, data, model, optimizer, callbacks, model_l = setup(
-        args.config_path, sweep_config
-    )
+    config, data, model, optimizer, model_l = setup(args.config_path, sweep_config)
     data.prepare_data()
     data.setup()
-    if args.run_debugger:
-        run_debugger(model_l, data)
 
     wandb_logger = WandbLogger(
         project="rotten-tomatoes",
@@ -52,13 +48,10 @@ def main():
         logger=wandb_logger,
         check_val_every_n_epoch=config.training.check_val_every_n_epoch,
         log_every_n_steps=config.training.log_every_n_steps,
-        callbacks=callbacks,
         detect_anomaly=config.training.detect_anomaly,
     )
     trainer.fit(model_l, datamodule=data)
     wandb.finish()
-
-    cleanup(config.callbacks.model_checkpoint.dirpath)
 
 
 if __name__ == "__main__":

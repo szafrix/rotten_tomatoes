@@ -2,16 +2,13 @@ import shutil
 import argparse
 from typing import Tuple, Any
 
-from classification.utils.factories import (
-    model_factory,
-    optimizer_factory,
-    callbacks_factory,
+from masked_lm.config.utils import parse_config
+from masked_lm.data.data_loader import RottenDataLoaderForMaskedLM
+from masked_lm.models.lightning_wrapper import (
+    RottenTomatoesDomainAdaptationModel,
+    LightingModelWrapperForMaskedLM,
 )
-from classification.config.utils import parse_config
-from classification.data.data_loader import RottenDataLoader
-from classification.models.classifiers.lightning_wrappers import (
-    LightingModelWrapperForMulticlassClassification,
-)
+from masked_lm.utils.factories import optimizer_factory
 
 
 def parse_args():
@@ -21,29 +18,16 @@ def parse_args():
         type=str,
         help="Path to .yaml file that contains configuration details",
     )
-    parser.add_argument(
-        "--run_debugger",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-        help="Run some tests to check the training pipeline",
-    )
     return parser.parse_args()
 
 
 def setup(config_path: str, overwrite_dict=None) -> Tuple[Any]:
     config = parse_config(config_path, overwrite_dict)
-    data = RottenDataLoader(config.data)
-    model = model_factory(config.model)
+    data = RottenDataLoaderForMaskedLM(config.data)
+    model = RottenTomatoesDomainAdaptationModel(config.model)
     optimizer = optimizer_factory(config.optimizer, model.parameters())
-    callbacks = callbacks_factory(config.callbacks)
-    model_l = LightingModelWrapperForMulticlassClassification(
-        model=model, optimizer=optimizer
-    )
-    return config, data, model, optimizer, callbacks, model_l
-
-
-def cleanup(model_ckpt_dir: str) -> None:
-    shutil.rmtree(model_ckpt_dir, ignore_errors=True)
+    model_l = LightingModelWrapperForMaskedLM(model=model, optimizer=optimizer)
+    return config, data, model, optimizer, model_l
 
 
 ## PARSING WANDB SWEEP PARAMETERS
