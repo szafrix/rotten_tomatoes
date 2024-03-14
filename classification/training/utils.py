@@ -9,8 +9,8 @@ from classification.utils.factories import (
 )
 from classification.config.utils import parse_config
 from classification.data.data_loader import RottenDataLoader
-from classification.models.classifiers.lightning_wrappers import (
-    LightingModelWrapperForMulticlassClassification,
+from classification.models.encoders.lightning_wrapper import (
+    LightingModelWrapperForBinaryClassification,
 )
 
 
@@ -36,7 +36,7 @@ def setup(config_path: str, overwrite_dict=None) -> Tuple[Any]:
     model = model_factory(config.model)
     optimizer = optimizer_factory(config.optimizer, model.parameters())
     callbacks = callbacks_factory(config.callbacks)
-    model_l = LightingModelWrapperForMulticlassClassification(
+    model_l = LightingModelWrapperForBinaryClassification(
         model=model, optimizer=optimizer
     )
     return config, data, model, optimizer, callbacks, model_l

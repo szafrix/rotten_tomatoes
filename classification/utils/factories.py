@@ -4,14 +4,10 @@ import inspect
 from typing import List, Optional
 
 from classification.config.schemas import ModelConfig, OptimizerConfig, CallbacksConfig
-from classification.models.classifiers.base_classes import BaseModel
-from classification.models.classifiers.baselines import (
-    InputIndependentBaselineModel,
-    BaselineBERTLogisticRegressionModel,
-    DomainAdaptedBERTWithSimpleHead,
-)
-from classification.models.classifiers.deeper_frozen_bert import (
-    FrozenBERTWithDeeperHead,
+from classification.models.encoders.base_class import PretrainedHuggingFaceModel
+from classification.models.encoders.architectures import (
+    BERTWithSimpleHead,
+    BERTWithDeeperHead,
 )
 from classification.training.callbacks.model_checkpoint_callback import (
     model_checkpoint_callback,
@@ -21,19 +17,11 @@ from classification.training.callbacks.early_stopping_callback import (
 )
 
 
-def model_factory(config: ModelConfig) -> BaseModel:
-    if config.name == "InputIndependentBaselineModel":
-        return InputIndependentBaselineModel(config)
-    if config.name == "BaselineBERTLogisticRegressionModel":
-        return BaselineBERTLogisticRegressionModel(config)
-    if config.name == "FrozenBERTWithDeeperHead":
-        return FrozenBERTWithDeeperHead(config)
-    if config.name == "UnfrozenBERT":
-        return BaselineBERTLogisticRegressionModel(config)
-    if config.name == "UnfrozenBERTAugmentedDatasetWithScrapedData":
-        return BaselineBERTLogisticRegressionModel(config)
-    if "DomainAdaptation" in config.name:
-        return DomainAdaptedBERTWithSimpleHead(config)
+def model_factory(config: ModelConfig) -> PretrainedHuggingFaceModel:
+    if "SimpleHead" in config.name:
+        return BERTWithSimpleHead(config)
+    if "DeeperHead" in config.name:
+        return BERTWithDeeperHead(config)
 
 
 def optimizer_factory(

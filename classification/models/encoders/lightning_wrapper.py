@@ -3,12 +3,14 @@ from lightning import LightningModule
 from lightning.pytorch.loggers import WandbLogger
 
 from classification.training.metrics.metrics import ModelMetrics
-from classification.models.classifiers.base_classes import BaseModel
+from classification.models.encoders.base_class import PretrainedHuggingFaceModel
 
 
-class LightingModelWrapperForMulticlassClassification(LightningModule):
+class LightingModelWrapperForBinaryClassification(LightningModule):
 
-    def __init__(self, model: BaseModel, optimizer: torch.optim.Optimizer):
+    def __init__(
+        self, model: PretrainedHuggingFaceModel, optimizer: torch.optim.Optimizer
+    ):
         super().__init__()
         self.model = model
         self.optimizer = optimizer

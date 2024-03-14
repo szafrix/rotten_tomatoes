@@ -1,10 +1,25 @@
 from torch import nn
 import torch.nn.init as init
-from classification.models.classifiers.base_classes import PretrainedHuggingFaceModel
+from transformers import AutoModel
+import numpy as np
+
 from classification.config.schemas import ModelConfig
+from classification.models.encoders.base_class import PretrainedHuggingFaceModel
 
 
-class FrozenBERTWithDeeperHead(PretrainedHuggingFaceModel):
+class BERTWithSimpleHead(PretrainedHuggingFaceModel):
+
+    def __init__(self, config: ModelConfig):
+        super().__init__(config)
+        self.cls_head = self.get_classification_head()
+        init.xavier_uniform_(self.cls_head[-1].weight)
+        init.zeros_(self.cls_head[-1].bias)
+
+    def get_classification_head(self) -> nn.Sequential:
+        return nn.Sequential(nn.Linear(768, 1))
+
+
+class BERTWithDeeperHead(PretrainedHuggingFaceModel):
 
     def __init__(self, config: ModelConfig):
         super().__init__(config)

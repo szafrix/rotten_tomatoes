@@ -1,7 +1,7 @@
 import torch
 from lightning import LightningModule
 
-from masked_lm.models.torch_model import RottenTomatoesDomainAdaptationModel
+from masked_lm.models.architectures import RottenTomatoesDomainAdaptationModel
 
 
 class LightingModelWrapperForMaskedLM(LightningModule):

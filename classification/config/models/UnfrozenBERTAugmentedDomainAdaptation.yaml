@@ -16,9 +16,10 @@ data:
 
 
 model:
-  name: 'UnfrozenBERTAugmentedDomainAdaptation'
+  name: 'DomainAdapted_BERT_UnfrozenWeights_SimpleHead'
   hf_pretrained_model_name: 'bert-base-uncased'
   freeze_weights: False
+  domain_adapted_model_path: 'masked_lm/models/best_model'
 
 optimizer:
   name: AdamW

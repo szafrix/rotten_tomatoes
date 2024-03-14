@@ -1,11 +1,12 @@
 data:
   hf_dataset_name: 'rotten_tomatoes'
-  path_to_save_dataset: 'data/dataset_tokenized'
+  path_to_save_dataset: 'data/dataset_tokenized_augmented_with_scraped_data'
+  path_to_scraped_json: 'rt_scraper/results/scraped_dataset_sans_already_present_quotes.json'
   tokenizer_model_name: 'bert-base-uncased'
   shuffle_upon_saving: True
   tokenize_padding: False
   tokenize_truncation: True
-  batch_size: 256
+  batch_size: 64
   num_workers_train: 10
   num_workers_val: 10
   num_workers_test: 10
@@ -15,15 +16,15 @@ data:
 
 
 model:
-  name: 'UnfrozenBERT'
+  name: 'BERT_UnfrozenWeights_SimpleHead_Augmented'
   hf_pretrained_model_name: 'bert-base-uncased'
   freeze_weights: False
 
 optimizer:
   name: AdamW
   kwargs:
-    lr: 9e-6
-    beta1: 0.9
+    lr: 2e-5
+    beta1: 0.91
     beta2: 0.99
     weight_decay: 0.1
 

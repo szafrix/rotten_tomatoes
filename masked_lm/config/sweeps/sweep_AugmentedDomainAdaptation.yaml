@@ -1,12 +1,12 @@
-name: InitialDeeperFrozenBERT
+name: BERTForMaskedLM
 count: 100
-program: classification/training/run_experiment.py
+program: masked_lm/training/run_experiment.py
 interpreter: PYTHONPATH=. pdm run python
 command:
   - ${interpreter}
   - ${program}
   - "--config_path"
-  - "configs/models/FrozenBERTWithDeeperHead.yaml"
+  - "masked_lm/config/models/BERTForMaskedLM.yaml"
 
 method: random
 metric:
@@ -19,8 +19,8 @@ parameters:
     values: ["AdamW"]
   optimizer__kwargs__lr:
     distribution: log_uniform_values
-    min: 0.0002
-    max: 0.01
+    min: 0.000002
+    max: 0.001
   optimizer__kwargs__weight_decay:
     values: [0, 1e-4, 1e-5]
   optimizer__kwargs__beta1:
@@ -29,5 +29,5 @@ parameters:
     max: 0.93
   optimizer__kwargs__beta2:
     distribution: uniform
-    min: 0.94
+    min: 0.95
     max: 0.999

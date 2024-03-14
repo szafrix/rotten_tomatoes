@@ -1,4 +1,4 @@
-name: InitialSweepForOptimizerSelection_BaselineBERTLogisticRegressionModel
+name: BaselineBERT_FrozenWeights_SimpleHead_sweep
 count: 100
 program: classification/training/run_experiment.py
 interpreter: PYTHONPATH=. pdm run python
@@ -6,7 +6,7 @@ command:
   - ${interpreter}
   - ${program}
   - "--config_path"
-  - "configs/models/BaselineBERTLogisticRegressionModel.yaml"
+  - "classification/config/models/BaselineBERT_FrozenWeights_SimpleHead.yaml"
 
 method: random
 metric:

@@ -1,23 +1,22 @@
 import os
 import sys
+from dataclasses import asdict
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-
 sys.path.append(os.environ.get("PROJECT_DIR"))
-import lightning
+
+import wandb
+import torch
+from lightning import Trainer
 from lightning import seed_everything
 from lightning.pytorch.loggers import WandbLogger
 
-import torch
-from lightning import Trainer
-import wandb
 
 from classification.utils.wandb import wandb_login_ensure_personal_account
 from classification.training.utils import parse_args, setup, cleanup, parse_sweep_params
 from classification.training.debugging.tests import run_debugger
 
-from dataclasses import asdict
 
 seed_everything(42)
 torch.set_float32_matmul_precision("high")

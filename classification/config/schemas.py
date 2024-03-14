@@ -27,8 +27,9 @@ class DataConfig:
 @dataclass
 class ModelConfig:
     name: str
-    hf_pretrained_model_name: Optional[str]  # for HF based models
-    freeze_weights: bool  # for HF based models
+    hf_pretrained_model_name: str
+    freeze_weights: bool
+    domain_adapted_model_path: Optional[str] = None
 
 
 @dataclass
