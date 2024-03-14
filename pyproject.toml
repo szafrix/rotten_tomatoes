@@ -3,7 +3,7 @@ name = ""
 version = ""
 description = ""
 authors = [
-    {name = "Bartosz Szafranski", email = "b.szafranski@tidio.net"},
+    {name = "Bartosz Szafranski", email = "bartosz.szafranski1@gmail.com"},
 ]
 dependencies = [
     "transformers>=4.37.2",
