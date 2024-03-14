@@ -171,3 +171,5 @@ training/training
 wandb
 model_ckpts
 checkpoints
+
+best_model

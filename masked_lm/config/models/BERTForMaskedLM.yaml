@@ -1,0 +1,36 @@
+data:
+  path_to_json: 'rt_scraper/results/scraped_dataset_sans_already_present_quotes.json'
+  path_to_save_dataset: 'data/dataset_for_masked_lm'
+  tokenizer_model_name: 'bert-base-uncased'
+  tokenize_padding: False
+  tokenize_truncation: False
+  shuffle_upon_saving: True
+  drop_unnecessary_columns: True
+  single_chunk_size: 128
+  mlm_probability: 0.15
+  train_size: 0.93
+  batch_size: 128
+  num_workers_train: 10
+  num_workers_val: 10
+  shuffle_train: True
+  shuffle_val: False
+
+
+model:
+  name: 'BERTForMaskedLM'
+  hf_pretrained_model_name: 'bert-base-uncased'
+
+optimizer:
+  name: AdamW
+  kwargs:
+    lr: 1e-4
+    beta1: 0.9
+    beta2: 0.999
+    weight_decay: 0.01
+
+training:
+  max_epochs: 5
+  accelerator: 'auto'
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 1
+  detect_anomaly: False

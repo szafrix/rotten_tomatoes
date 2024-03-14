@@ -1,0 +1,47 @@
+data:
+  hf_dataset_name: 'rotten_tomatoes'
+  path_to_save_dataset: 'data/dataset_tokenized_augmented_with_scraped_data'
+  path_to_scraped_json: 'rt_scraper/results/scraped_dataset_sans_already_present_quotes.json'
+  tokenizer_model_name: 'bert-base-uncased'
+  shuffle_upon_saving: True
+  tokenize_padding: False
+  tokenize_truncation: True
+  batch_size: 64
+  num_workers_train: 10
+  num_workers_val: 10
+  num_workers_test: 10
+  shuffle_train: True
+  shuffle_val: False
+  shuffle_test: False
+
+
+model:
+  name: 'BERT_UnfrozenWeights_SimpleHead_Augmented'
+  hf_pretrained_model_name: 'bert-base-uncased'
+  freeze_weights: False
+
+optimizer:
+  name: AdamW
+  kwargs:
+    lr: 2e-5
+    beta1: 0.91
+    beta2: 0.99
+    weight_decay: 0.1
+
+training:
+  max_epochs: 2
+  accelerator: 'auto'
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 1
+  detect_anomaly: False
+
+callbacks:
+  model_checkpoint:
+    save_top_k: 0
+    monitor: 'val/loss'
+    mode: 'min'
+    auto_insert_metric_name: False
+    save_weights_only: True
+    every_n_train_steps: null
+    dirpath: './tmpdir'
+    filename: '{epoch}-{val/loss:.2f}'
