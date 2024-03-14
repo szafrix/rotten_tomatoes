@@ -1,8 +1,9 @@
+from typing import Optional
+
 from datasets import load_dataset, DatasetDict, Dataset, concatenate_datasets
-from transformers import (
-    AutoTokenizer,
-    DataCollatorWithPadding,
-)
+from datasets.formatting.formatting import LazyBatch
+
+from transformers import AutoTokenizer, DataCollatorWithPadding, BatchEncoding
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader
 import pandas as pd
@@ -10,7 +11,7 @@ from classification.config.schemas import DataConfig, GLOBAL_SEED
 
 
 class RottenDataLoader(LightningDataModule):
-    def __init__(self, config: DataConfig):
+    def __init__(self, config: DataConfig) -> None:
         super().__init__()
         self.config = config
         self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_model_name)
@@ -18,7 +19,7 @@ class RottenDataLoader(LightningDataModule):
             tokenizer=self.tokenizer, return_tensors="pt"
         )
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         ds = load_dataset(self.config.hf_dataset_name)
         if self.config.path_to_scraped_json:
             ds["train"] = self.augment_train_dataset_with_scraped_quotes(
@@ -29,11 +30,11 @@ class RottenDataLoader(LightningDataModule):
             ds = ds.shuffle(seed=GLOBAL_SEED)
         ds.save_to_disk(self.config.path_to_save_dataset)
 
-    def setup(self, stage=None):
+    def setup(self, stage: Optional[str] = None) -> None:
         dataset = DatasetDict.load_from_disk(self.config.path_to_save_dataset)
         self.dataset = dataset.remove_columns(["text"]).with_format("torch")
 
-    def train_dataloader(self):
+    def train_dataloader(self) -> DataLoader:
         return DataLoader(
             self.dataset["train"],
             batch_size=self.config.batch_size,
@@ -42,7 +43,7 @@ class RottenDataLoader(LightningDataModule):
             collate_fn=self.data_collator,
         )
 
-    def val_dataloader(self):
+    def val_dataloader(self) -> DataLoader:
         return DataLoader(
             self.dataset["validation"],
             batch_size=self.config.batch_size,
@@ -51,7 +52,7 @@ class RottenDataLoader(LightningDataModule):
             collate_fn=self.data_collator,
         )
 
-    def test_dataloader(self):
+    def test_dataloader(self) -> DataLoader:
         return DataLoader(
             self.dataset["test"],
             batch_size=self.config.batch_size,
@@ -60,7 +61,7 @@ class RottenDataLoader(LightningDataModule):
             collate_fn=self.data_collator,
         )
 
-    def tokenize(self, batch):
+    def tokenize(self, batch: LazyBatch) -> BatchEncoding:
         return self.tokenizer(
             batch["text"],
             padding=self.config.tokenize_padding,

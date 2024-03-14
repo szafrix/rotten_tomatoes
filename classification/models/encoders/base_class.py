@@ -2,9 +2,11 @@ import torch
 from classification.config.schemas import ModelConfig
 from transformers import AutoModel
 
+from typing import Dict, Any
+
 
 class PretrainedHuggingFaceModel(torch.nn.Module):
-    def __init__(self, config: ModelConfig):
+    def __init__(self, config: ModelConfig) -> None:
         super().__init__()
         self.config = config
         if self.config.domain_adapted_model_path:
@@ -13,7 +15,7 @@ class PretrainedHuggingFaceModel(torch.nn.Module):
             self.model = self.load_model_from_hf()
         self.cls_head = self.get_classification_head()
 
-    def forward(self, x):
+    def forward(self, x: Dict[str, Any]) -> torch.Tensor:
         output = self.model(
             **{
                 k: v
@@ -25,7 +27,7 @@ class PretrainedHuggingFaceModel(torch.nn.Module):
         x = self.cls_head(x)
         return x
 
-    def load_model_from_hf(self):
+    def load_model_from_hf(self) -> AutoModel:
         model = AutoModel.from_pretrained(self.config.hf_pretrained_model_name)
         if self.config.freeze_weights:
             for p in model.parameters():
@@ -33,7 +35,7 @@ class PretrainedHuggingFaceModel(torch.nn.Module):
                 p.grad = None
         return model
 
-    def load_model_from_file(self):
+    def load_model_from_file(self) -> AutoModel:
         model = AutoModel.from_pretrained(self.config.hf_pretrained_model_name)
         model = model.from_pretrained(self.config.domain_adapted_model_path)
         if self.config.freeze_weights:

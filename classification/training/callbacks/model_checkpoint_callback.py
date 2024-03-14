@@ -1,10 +1,10 @@
-from lightning.pytorch import callbacks
+from lightning.pytorch.callbacks import ModelCheckpoint
 
 from classification.config.schemas import ModelCheckpointCallbackConfig
 
 
-def model_checkpoint_callback(config: ModelCheckpointCallbackConfig):
-    checkpoint_callback = callbacks.ModelCheckpoint(
+def model_checkpoint_callback(config: ModelCheckpointCallbackConfig) -> ModelCheckpoint:
+    checkpoint_callback = ModelCheckpoint(
         save_top_k=config.save_top_k,
         monitor=config.monitor,
         mode=config.mode,

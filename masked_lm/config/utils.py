@@ -4,7 +4,7 @@ from typing import Dict, Any
 from masked_lm.config.schemas import ExperimentConfig
 
 
-def nested_update(d, u):
+def nested_update(d: Dict[Any, Any], u: Dict[Any, Any]) -> Dict[Any, Any]:
     for k, v in u.items():
         if isinstance(v, dict):
             d[k] = nested_update(d.get(k, {}), v)

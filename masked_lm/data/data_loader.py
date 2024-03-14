@@ -1,8 +1,6 @@
 from datasets import DatasetDict, Dataset
-from transformers import (
-    AutoTokenizer,
-    DataCollatorForLanguageModeling,
-)
+from datasets.formatting.formatting import LazyBatch
+from transformers import AutoTokenizer, DataCollatorForLanguageModeling, BatchEncoding
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader
 import pandas as pd
@@ -10,7 +8,7 @@ from masked_lm.config.schemas import DataConfigForMaskedLM, GLOBAL_SEED
 
 
 class RottenDataLoaderForMaskedLM(LightningDataModule):
-    def __init__(self, config: DataConfigForMaskedLM):
+    def __init__(self, config: DataConfigForMaskedLM) -> None:
         super().__init__()
         self.config = config
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -22,7 +20,7 @@ class RottenDataLoaderForMaskedLM(LightningDataModule):
             return_tensors="pt",
         )
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         df_scraped = pd.read_json(self.config.path_to_json)
         ds_scraped = Dataset.from_pandas(df_scraped)
         ds_scraped = ds_scraped.remove_columns(["__index_level_0__"])
@@ -35,11 +33,11 @@ class RottenDataLoaderForMaskedLM(LightningDataModule):
         ds = ds.train_test_split(train_size=self.config.train_size, seed=GLOBAL_SEED)
         ds.save_to_disk(self.config.path_to_save_dataset)
 
-    def setup(self, stage=None):
+    def setup(self, stage: str = None) -> None:
         dataset = DatasetDict.load_from_disk(self.config.path_to_save_dataset)
         self.dataset = dataset.with_format("torch")
 
-    def train_dataloader(self):
+    def train_dataloader(self) -> DataLoader:
         return DataLoader(
             self.dataset["train"],
             batch_size=self.config.batch_size,
@@ -48,7 +46,7 @@ class RottenDataLoaderForMaskedLM(LightningDataModule):
             collate_fn=self.data_collator,
         )
 
-    def val_dataloader(self):
+    def val_dataloader(self) -> DataLoader:
         return DataLoader(
             self.dataset["test"],
             batch_size=self.config.batch_size,
@@ -57,7 +55,7 @@ class RottenDataLoaderForMaskedLM(LightningDataModule):
             collate_fn=self.data_collator,
         )
 
-    def tokenize(self, batch):
+    def tokenize(self, batch: LazyBatch) -> BatchEncoding:
         batch_tokenized = self.tokenizer(
             batch["text"],
             padding=self.config.tokenize_padding,

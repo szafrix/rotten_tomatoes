@@ -1,6 +1,6 @@
 import shutil
 import argparse
-from typing import Tuple, Any
+from typing import Tuple, Any, Dict
 
 from classification.utils.factories import (
     model_factory,
@@ -14,7 +14,7 @@ from classification.models.encoders.lightning_wrapper import (
 )
 
 
-def parse_args():
+def parse_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config_path",
@@ -30,7 +30,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def setup(config_path: str, overwrite_dict=None) -> Tuple[Any]:
+def setup(config_path: str, overwrite_dict: bool = None) -> Tuple[Any]:
     config = parse_config(config_path, overwrite_dict)
     data = RottenDataLoader(config.data)
     model = model_factory(config.model)
@@ -49,7 +49,7 @@ def cleanup(model_ckpt_dir: str) -> None:
 ## PARSING WANDB SWEEP PARAMETERS
 
 
-def nested_update(d, u):
+def nested_update(d: Dict[Any, Any], u: Dict[Any, Any]) -> Dict[Any, Any]:
     for k, v in u.items():
         if isinstance(v, dict):
             d[k] = nested_update(d.get(k, {}), v)
@@ -58,7 +58,7 @@ def nested_update(d, u):
     return d
 
 
-def parse_sweep_params(sweep_params):
+def parse_sweep_params(sweep_params: Dict[Any, Any]) -> Dict[Any, Any]:
     nested_params = {}
     for flat_key, value in sweep_params.items():
         keys = flat_key.split("__")

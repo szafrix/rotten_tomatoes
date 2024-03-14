@@ -22,7 +22,7 @@ seed_everything(42)
 torch.set_float32_matmul_precision("high")
 
 
-def main():
+def main() -> None:
     args = parse_args()
 
     wandb_login_ensure_personal_account()

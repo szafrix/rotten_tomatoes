@@ -4,16 +4,25 @@ from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 
 from classification.training.debugging.logger import get_logger
 
+from classification.data.data_loader import RottenDataLoader
+from classification.models.encoders.lightning_wrapper import (
+    LightingModelWrapperForBinaryClassification,
+)
+
 logger = get_logger()
 
 
 class TrainingPipelineDebugger:
 
-    def __init__(self, data, model_l):
+    def __init__(
+        self,
+        data: RottenDataLoader,
+        model_l: LightingModelWrapperForBinaryClassification,
+    ) -> None:
         self.data = data
         self.model_l = model_l
 
-    def test__fail_fast(self):
+    def test__fail_fast(self) -> None:
         data = deepcopy(self.data)
         model = deepcopy(self.model_l)
         trainer = Trainer(
@@ -27,7 +36,7 @@ class TrainingPipelineDebugger:
         else:
             logger.info("PASS: test__fail_fast")
 
-    def test_overfit_on_single_batch(self):
+    def test_overfit_on_single_batch(self) -> None:
         data = deepcopy(self.data)
         model = deepcopy(self.model_l)
         data.config.batch_size = 2
@@ -48,7 +57,7 @@ class TrainingPipelineDebugger:
                 f"FAIL: test_overfit_on_single_batch, final train loss: {train_loss}"
             )
 
-    def test_overfit_on_single_batch(self):
+    def test_overfit_on_single_batch(self) -> None:
         data = deepcopy(self.data)
         model = deepcopy(self.model_l)
         model.optimizer.param_groups[0]["lr"] = 2e-2
@@ -70,14 +79,16 @@ class TrainingPipelineDebugger:
                 f"FAIL: test_overfit_on_single_batch, final train loss: {train_loss}"
             )
 
-    def batch_dependent_loss(self):
+    def batch_dependent_loss(self) -> None:
         raise NotImplementedError
 
-    def test_dataset(self):
+    def test_dataset(self) -> None:
         raise NotImplementedError
 
 
-def run_debugger(model_l, data):
+def run_debugger(
+    model_l: LightingModelWrapperForBinaryClassification, data: RottenDataLoader
+) -> None:
     t = TrainingPipelineDebugger(data, model_l)
     t.test__fail_fast()
     t.test_overfit_on_single_batch()

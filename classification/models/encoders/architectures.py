@@ -9,7 +9,7 @@ from classification.models.encoders.base_class import PretrainedHuggingFaceModel
 
 class BERTWithSimpleHead(PretrainedHuggingFaceModel):
 
-    def __init__(self, config: ModelConfig):
+    def __init__(self, config: ModelConfig) -> None:
         super().__init__(config)
         self.cls_head = self.get_classification_head()
         init.xavier_uniform_(self.cls_head[-1].weight)
@@ -21,7 +21,7 @@ class BERTWithSimpleHead(PretrainedHuggingFaceModel):
 
 class BERTWithDeeperHead(PretrainedHuggingFaceModel):
 
-    def __init__(self, config: ModelConfig):
+    def __init__(self, config: ModelConfig) -> None:
         super().__init__(config)
         self.cls_head = self.get_classification_head()
 

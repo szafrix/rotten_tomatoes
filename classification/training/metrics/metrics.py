@@ -13,9 +13,11 @@ import wandb
 
 import io
 from PIL import Image
-
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+from typing import Dict
 
 
 class ModelMetrics(nn.Module):
@@ -40,22 +42,22 @@ class ModelMetrics(nn.Module):
         self.output_metrics(raw_outputs, target)
         self.confusion_matrix_metric(preds.int(), target.int())
 
-    def compute(self):
+    def compute(self) -> Dict[str, Tensor]:
         results = {**self.prediction_metrics.compute(), **self.output_metrics.compute()}
         return results
 
-    def reset(self):
+    def reset(self) -> None:
         self.prediction_metrics.reset()
         self.output_metrics.reset()
         self.confusion_matrix_metric.reset()
 
-    def log_confusion_matrix(self, logger):
+    def log_confusion_matrix(self, logger: wandb.wandb_run.Run) -> None:
         cm = self.confusion_matrix_metric.compute().cpu().numpy()
         fig = self._plot_confusion_matrix(cm)
         img = self._fig_to_wandb_img(fig)
         logger.experiment.log({f"{self.prefix}confusion_matrix": [img]})
 
-    def _plot_confusion_matrix(self, cm):
+    def _plot_confusion_matrix(self, cm: np.ndarray) -> plt.Figure:
         fig, ax = plt.subplots()
         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
         ax.set_title(f"{self.prefix}confusion matrix")
@@ -64,7 +66,7 @@ class ModelMetrics(nn.Module):
         return fig
 
     @staticmethod
-    def _fig_to_wandb_img(fig):
+    def _fig_to_wandb_img(fig: plt.Figure) -> wandb.Image:
         with io.BytesIO() as buf:
             plt.savefig(buf, format="png")
             plt.close(fig)
