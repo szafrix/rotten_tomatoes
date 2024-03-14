@@ -55,6 +55,8 @@ def main():
     trainer.fit(model_l, datamodule=data)
     wandb.finish()
 
+    model_l.model.model.save_pretrained("./masked_lm/models/best_model", from_pt=True)
+
 
 if __name__ == "__main__":
     main()
